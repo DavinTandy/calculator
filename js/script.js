@@ -2,6 +2,8 @@ const line1 = document.getElementById("line1");
 const line2 = document.getElementById("line2");
 const numbers = document.getElementsByClassName("number");
 const operators = document.getElementsByClassName("operator");
+const comma = document.getElementById("comma");
+let commaBool = true;
 
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener("click", function() {
@@ -24,8 +26,22 @@ for (let i = 0; i < operators.length; i++) {
             }
         }
         line1.textContent += operators[i].textContent;
+        commaBool = true;
     })
 }
+
+comma.addEventListener("click", function() {
+    for (let i = 0; i < operators.length; i++) {
+        if (line1.textContent.charAt(line1.textContent.length - 1) === operators[i].textContent) {
+            line1.textContent += "0" + comma.textContent;
+            commaBool = false;
+        }
+    }
+    if (commaBool === true) {
+        line1.textContent += comma.textContent;
+        commaBool = false;
+    }
+})
 
 function add(num1, num2) {
     return num1 + num2;
