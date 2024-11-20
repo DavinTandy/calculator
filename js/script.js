@@ -1,3 +1,17 @@
+const line1 = document.getElementById("line1");
+const line2 = document.getElementById("line2");
+const numbers = document.getElementsByClassName("number");
+
+for (let i = 0; i < numbers.length; i++) {
+    numbers[i].addEventListener("click", function() {
+        if (line1.textContent === "0") {
+            line1.textContent = numbers[i].textContent;
+        } else {
+            line1.textContent += numbers[i].textContent
+        }
+    })
+}
+
 function add(num1, num2) {
     return num1 + num2;
 }
