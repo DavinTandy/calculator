@@ -4,11 +4,12 @@ const clear = document.getElementById("clear");
 const del = document.getElementById("delete");
 const numbers = document.getElementsByClassName("number");
 const operators = document.getElementsByClassName("operator");
+const percent = document.getElementById("percent");
 const comma = document.getElementById("comma");
 let commaBool = true;
 
 clear.addEventListener("click", function() {
-    line1.textContent = "0"
+    line1.textContent = "0";
     commaBool = true;
 })
 
@@ -21,10 +22,12 @@ del.addEventListener("click", function() {
 
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener("click", function() {
-        if (line1.textContent === "0") {
+        if (line1.textContent.charAt(line1.textContent.length - 1) === "%") {
+            line1.textContent += "×" + numbers[i].textContent;
+        } else if (line1.textContent === "0") {
             line1.textContent = numbers[i].textContent;
         } else {
-            line1.textContent += numbers[i].textContent
+            line1.textContent += numbers[i].textContent;
         }
     })
 }
@@ -43,6 +46,18 @@ for (let i = 0; i < operators.length; i++) {
         commaBool = true;
     })
 }
+
+percent.addEventListener("click", function() {
+    if (line1.textContent.charAt(line1.textContent.length - 1) === "%") {
+        return;
+    }
+    for (let i = 0; i < operators.length; i++) {
+        if (line1.textContent.charAt(line1.textContent.length - 1) === operators[i].textContent) {
+            return;
+        }
+    }
+    line1.textContent += "%";
+})
 
 comma.addEventListener("click", function() {
     for (let i = 0; i < operators.length; i++) {
