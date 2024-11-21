@@ -1,6 +1,7 @@
 const line1 = document.getElementById("line1");
 const line2 = document.getElementById("line2");
 const clear = document.getElementById("clear");
+const del = document.getElementById("delete");
 const numbers = document.getElementsByClassName("number");
 const operators = document.getElementsByClassName("operator");
 const comma = document.getElementById("comma");
@@ -9,6 +10,13 @@ let commaBool = true;
 clear.addEventListener("click", function() {
     line1.textContent = "0"
     commaBool = true;
+})
+
+del.addEventListener("click", function() {
+    if (line1.textContent.charAt(line1.textContent.length - 1) === ".") {
+        commaBool = true;
+    }
+    line1.textContent = line1.textContent.slice(0, -1);
 })
 
 for (let i = 0; i < numbers.length; i++) {
