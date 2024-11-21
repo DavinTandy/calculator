@@ -1,9 +1,15 @@
 const line1 = document.getElementById("line1");
 const line2 = document.getElementById("line2");
+const clear = document.getElementById("clear");
 const numbers = document.getElementsByClassName("number");
 const operators = document.getElementsByClassName("operator");
 const comma = document.getElementById("comma");
 let commaBool = true;
+
+clear.addEventListener("click", function() {
+    line1.textContent = "0"
+    commaBool = true;
+})
 
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener("click", function() {
