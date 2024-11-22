@@ -38,8 +38,13 @@ for (let i = 0; i < numbers.length; i++) {
 
 for (let i = 0; i < operators.length; i++) {
     operators[i].addEventListener("click", function() {
-        if (line1.textContent === "0" || line1.textContent.charAt(line1.textContent.length - 1) === "(") {
+        if (line1.textContent === "0") {
             return;
+        }
+        if (line1.textContent.charAt(line1.textContent.length - 1) === "(") {
+            if (operators[i].textContent === "×" || operators[i].textContent === "÷") {
+                return;
+            }
         }
         for (let j = 0; j < operators.length; j++) {
             if (line1.textContent.charAt(line1.textContent.length - 1) === operators[j].textContent) {
