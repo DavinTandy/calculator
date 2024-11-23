@@ -145,17 +145,37 @@ function operate(operation) {
     const operatorArray = operation.split(/[0-9+\.]/g).filter(function(e) {
         return e;
     })
+    const decimal = [];
+    for (let i = 0; i < numberArray.length; i++) {
+        decimal.push(numberArray[i].split(/[0-9]+\./g)[1]);
+    }
+    let decimalCount = 0;
+    if (decimal[0]) {
+        decimalCount = decimal[0].length;
+    }
     let result = Number(numberArray[0]);
     for (let i = 1; i < numberArray.length; i++) {
         if (operatorArray[i - 1] === "+") {
             result = Number(result) + Number(numberArray[i]);
+            if (decimal[i]) {
+                decimalCount = Math.max(decimalCount, decimal[i].length);
+            }
         } else if (operatorArray[i - 1] === "-") {
             result = Number(result) - Number(numberArray[i]);
+            if (decimal[i]) {
+                decimalCount = Math.max(decimalCount, decimal[i].length);
+            }
         } else if (operatorArray[i - 1] === "×") {
             result = Number(result) * Number(numberArray[i]);
+            if (decimal[i]) {
+                decimalCount = decimalCount + decimal[i].length;
+            }
         } else if (operatorArray[i - 1] === "÷") {
             result = Number(result) / Number(numberArray[i]);
+            if (decimal[i]) {
+                decimalCount = decimalCount + decimal[i].length;
+            }
         }
     }
-    line2.textContent = result;
+    line2.textContent = result.toFixed(decimalCount);
 }
