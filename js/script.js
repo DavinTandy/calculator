@@ -9,9 +9,11 @@ const comma = document.getElementById("comma");
 let commaBool = true;
 const bracket = document.getElementById("bracket");
 let openBracket = 0;
+const equal = document.getElementById("equal");
 
 clear.addEventListener("click", function() {
     line1.textContent = "0";
+    line2.textContent = "";
     commaBool = true;
 })
 
@@ -26,7 +28,9 @@ del.addEventListener("click", function() {
 
 for (let i = 0; i < numbers.length; i++) {
     numbers[i].addEventListener("click", function() {
-        if (line1.textContent.charAt(line1.textContent.length - 1) === "%") {
+        if (line1.textContent.length >= 18) {
+            return;
+        } else if (line1.textContent.charAt(line1.textContent.length - 1) === "%") {
             line1.textContent += "×" + numbers[i].textContent;
         } else if (line1.textContent === "0") {
             line1.textContent = numbers[i].textContent;
@@ -38,10 +42,11 @@ for (let i = 0; i < numbers.length; i++) {
 
 for (let i = 0; i < operators.length; i++) {
     operators[i].addEventListener("click", function() {
-        if (line1.textContent === "0") {
+        if (line1.textContent.length >= 18) {
             return;
-        }
-        if (line1.textContent.charAt(line1.textContent.length - 1) === "(") {
+        } else if (line1.textContent === "0") {
+            return;
+        } else if (line1.textContent.charAt(line1.textContent.length - 1) === "(") {
             if (operators[i].textContent === "×" || operators[i].textContent === "÷") {
                 return;
             }
@@ -57,7 +62,9 @@ for (let i = 0; i < operators.length; i++) {
 }
 
 percent.addEventListener("click", function() {
-    if (line1.textContent.charAt(line1.textContent.length - 1) === "%" || line1.textContent.charAt(line1.textContent.length - 1) === "(") {
+    if (line1.textContent.length >= 18) {
+        return;
+    } else if (line1.textContent.charAt(line1.textContent.length - 1) === "%" || line1.textContent.charAt(line1.textContent.length - 1) === "(") {
         return;
     }
     for (let i = 0; i < operators.length; i++) {
@@ -69,6 +76,9 @@ percent.addEventListener("click", function() {
 })
 
 comma.addEventListener("click", function() {
+    if (line1.textContent.length >= 18) {
+        return;
+    }
     for (let i = 0; i < operators.length; i++) {
         if (line1.textContent.charAt(line1.textContent.length - 1) === operators[i].textContent || line1.textContent.charAt(line1.textContent.length - 1) === "(") {
             line1.textContent += "0" + comma.textContent;
@@ -86,6 +96,9 @@ comma.addEventListener("click", function() {
 })
 
 bracket.addEventListener("click", function() {
+    if (line1.textContent.length >= 18) {
+        return;
+    }
     if (openBracket === 0) {
         if (line1.textContent === "0") {
             line1.textContent = "(";
@@ -123,30 +136,26 @@ bracket.addEventListener("click", function() {
     }
 })
 
-function add(num1, num2) {
-    return num1 + num2;
-}
+equal.addEventListener("click", function() {
+    operate(line1.textContent);
+})
 
-function subtract(num1, num2) {
-    return num1 - num2;
-}
-
-function multiply(num1, num2) {
-    return num1 * num2;
-}
-
-function divide(num1, num2) {
-    return num1 / num2;
-}
-
-function operator(num1, num2, operator) {
-    if (operator === "+") {
-        return add(num1, num2);
-    } else if (operator === "-") {
-        return subtract(num1, num2);
-    } else if (operator === "×") {
-        return multiply(num1, num2);
-    } else if (operator === "÷") {
-        return divide(num1, num2);
+function operate(operation) {
+    const numberArray = operation.split(/[\+\-×÷]/g);
+    const operatorArray = operation.split(/[0-9+\.]/g).filter(function(e) {
+        return e;
+    })
+    let result = Number(numberArray[0]);
+    for (let i = 1; i < numberArray.length; i++) {
+        if (operatorArray[i - 1] === "+") {
+            result = Number(result) + Number(numberArray[i]);
+        } else if (operatorArray[i - 1] === "-") {
+            result = Number(result) - Number(numberArray[i]);
+        } else if (operatorArray[i - 1] === "×") {
+            result = Number(result) * Number(numberArray[i]);
+        } else if (operatorArray[i - 1] === "÷") {
+            result = Number(result) / Number(numberArray[i]);
+        }
     }
+    line2.textContent = result;
 }
