@@ -24,6 +24,7 @@ del.addEventListener("click", function() {
         openBracket -= 1;
     }
     line1.textContent = line1.textContent.slice(0, -1);
+    operate(line1.textContent)
 })
 
 for (let i = 0; i < numbers.length; i++) {
@@ -37,6 +38,7 @@ for (let i = 0; i < numbers.length; i++) {
         } else {
             line1.textContent += numbers[i].textContent;
         }
+        operate(line1.textContent)
     })
 }
 
@@ -58,6 +60,7 @@ for (let i = 0; i < operators.length; i++) {
         }
         line1.textContent += operators[i].textContent;
         commaBool = true;
+        operate(line1.textContent)
     })
 }
 
@@ -73,6 +76,7 @@ percent.addEventListener("click", function() {
         }
     }
     line1.textContent += "%";
+    operate(line1.textContent)
 })
 
 comma.addEventListener("click", function() {
@@ -93,6 +97,7 @@ comma.addEventListener("click", function() {
         line1.textContent += comma.textContent;
         commaBool = false;
     }
+    operate(line1.textContent)
 })
 
 bracket.addEventListener("click", function() {
@@ -134,6 +139,7 @@ bracket.addEventListener("click", function() {
         line1.textContent += ")";
         openBracket -= 1;
     }
+    operate(line1.textContent)
 })
 
 equal.addEventListener("click", function() {
@@ -141,41 +147,7 @@ equal.addEventListener("click", function() {
 })
 
 function operate(operation) {
-    const numberArray = operation.split(/[\+\-×÷]/g);
-    const operatorArray = operation.split(/[0-9+\.]/g).filter(function(e) {
-        return e;
-    })
-    const decimal = [];
-    for (let i = 0; i < numberArray.length; i++) {
-        decimal.push(numberArray[i].split(/[0-9]+\./g)[1]);
+    if (eval(operation.replaceAll("×", "*").replaceAll("÷", "/").replaceAll("%", "/100"))) {
+        line2.textContent = eval(operation.replaceAll("×", "*").replaceAll("÷", "/").replaceAll("%", "/100"));
     }
-    let decimalCount = 0;
-    if (decimal[0]) {
-        decimalCount = decimal[0].length;
-    }
-    let result = Number(numberArray[0]);
-    for (let i = 1; i < numberArray.length; i++) {
-        if (operatorArray[i - 1] === "+") {
-            result = Number(result) + Number(numberArray[i]);
-            if (decimal[i]) {
-                decimalCount = Math.max(decimalCount, decimal[i].length);
-            }
-        } else if (operatorArray[i - 1] === "-") {
-            result = Number(result) - Number(numberArray[i]);
-            if (decimal[i]) {
-                decimalCount = Math.max(decimalCount, decimal[i].length);
-            }
-        } else if (operatorArray[i - 1] === "×") {
-            result = Number(result) * Number(numberArray[i]);
-            if (decimal[i]) {
-                decimalCount = decimalCount + decimal[i].length;
-            }
-        } else if (operatorArray[i - 1] === "÷") {
-            result = Number(result) / Number(numberArray[i]);
-            if (decimal[i]) {
-                decimalCount = decimalCount + decimal[i].length;
-            }
-        }
-    }
-    line2.textContent = result.toFixed(decimalCount);
 }
